@@ -2,7 +2,12 @@ package com.microserge.pddanswers.ui.presentation.question_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.microserge.pddanswers.Question
+import com.microserge.pddanswers.core.domain.onError
+import com.microserge.pddanswers.core.domain.onSuccess
+import com.microserge.pddanswers.core.presentation.toUiText
+import com.microserge.pddanswers.question.domain.Question
+import com.microserge.pddanswers.question.domain.QuestionRepository
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,7 +21,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SearchViewModel() : ViewModel() {
+class SearchViewModel(
+    private val questionRepository: QuestionRepository
+) : ViewModel() {
 
     private var cachedQuestions = emptyList<Question>()
     private var searchJob: Job? = null
@@ -48,6 +55,7 @@ class SearchViewModel() : ViewModel() {
         }
     }
 
+    @OptIn(FlowPreview::class)
     private fun observeSearchQuery() {
         state
             .map { it.searchQuery }
@@ -78,6 +86,20 @@ class SearchViewModel() : ViewModel() {
             it.copy(isLoading = true)
         }
 
-        //get from api
+        questionRepository
+            .searchQuestions(query)
+            .onSuccess { searchResult ->
+                _state.update {
+                    it.copy(isLoading = false, errorMessage = null, searchResult = searchResult)
+                }
+            }.onError { error ->
+                _state.update {
+                    it.copy(
+                        searchResult = emptyList(),
+                        isLoading = false,
+                        errorMessage = error.toUiText()
+                    )
+                }
+            }
     }
 }

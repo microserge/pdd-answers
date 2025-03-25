@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
@@ -57,10 +59,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.serialization.jvm)
-    implementation(libs.ktor.client.logging)
+//    implementation(libs.ktor.client.android)
+//    implementation(libs.ktor.client.core)
+//    implementation(libs.ktor.client.serialization.jvm)
+//    implementation(libs.ktor.client.logging)
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
@@ -68,10 +70,16 @@ dependencies {
     implementation(libs.retrofit2.kotlin.coroutines.adapter)
 
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
     implementation(libs.androidx.compose.material3.adaptive.navigation)
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.bundles.ktor)
+
 }

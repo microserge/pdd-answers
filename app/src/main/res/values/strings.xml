@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pdd Answers</string>
+    <string name="error_unknown">Неизвестная ошибка</string>
 </resources>

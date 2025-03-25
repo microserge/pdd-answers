@@ -1,6 +1,6 @@
 package com.microserge.pddanswers.ui.presentation.question_list
 
-import com.microserge.pddanswers.Question
+import com.microserge.pddanswers.question.domain.Question
 
 sealed interface QuestionListAction {
     data class OnSearchQueryChange(val query: String) : QuestionListAction

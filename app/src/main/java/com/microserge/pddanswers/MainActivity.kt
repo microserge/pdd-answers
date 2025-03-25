@@ -1,4 +1,4 @@
-package com.microserge.pddanswers.ui.presentation
+package com.microserge.pddanswers
 
 import android.os.Bundle
 import android.widget.Toast

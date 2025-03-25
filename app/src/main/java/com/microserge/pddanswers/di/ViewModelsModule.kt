@@ -1,4 +1,4 @@
-package com.microserge.pddanswers.data.di
+package com.microserge.pddanswers.di
 
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module

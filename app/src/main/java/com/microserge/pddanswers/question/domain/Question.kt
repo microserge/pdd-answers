@@ -1,6 +1,5 @@
-package com.microserge.pddanswers
+package com.microserge.pddanswers.question.domain
 
-//https://pdd-answer.online/api/questions?search=&page=2
 data class Question(
     val chapter: Int,
     val id: String,
