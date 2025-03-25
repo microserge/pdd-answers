@@ -1,11 +1,12 @@
 package com.microserge.pddanswers
 
 import android.app.Application
+import com.microserge.pddanswers.data.di.viewModelsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
-class MainApplication: Application() {
+class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
@@ -13,7 +14,7 @@ class MainApplication: Application() {
 
             androidContext(this@MainApplication)
 
-            modules()
+            modules(viewModelsModule)
         }
     }
 }
