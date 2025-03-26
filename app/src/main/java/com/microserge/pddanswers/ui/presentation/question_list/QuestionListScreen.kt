@@ -1,0 +1,76 @@
+package com.microserge.pddanswers.ui.presentation.question_list
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.microserge.pddanswers.core.presentation.DarkBlue
+import com.microserge.pddanswers.ui.presentation.question_list.components.QuestionSearchBar
+import org.koin.androidx.compose.koinViewModel
+
+
+@Composable
+fun QuestionListScreenRoot(
+    viewModel: SearchViewModel = koinViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    QuestionListScreen(
+        state = state,
+        onAction = { action ->
+            when (action) {
+                is QuestionListAction.OnQuestionClick -> Unit
+                is QuestionListAction.OnSearchQueryChange -> Unit
+            }
+            viewModel.onAction(action)
+        }
+    )
+}
+
+@Composable
+fun QuestionListScreen(
+    state: QuestionListState,
+    onAction: (QuestionListAction) -> Unit
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val searchResultListState = rememberLazyListState()
+
+    LaunchedEffect(state.searchResult) {
+        searchResultListState.animateScrollToItem(0)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DarkBlue)
+            .statusBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        QuestionSearchBar(
+            searchQuery = state.searchQuery,
+            onSearchQueryChange = {
+                onAction(QuestionListAction.OnSearchQueryChange(it))
+            },
+            onImeSearch = {
+                keyboardController?.hide()
+            },
+            modifier = Modifier
+                .widthIn(max = 400.dp)
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
+    }
+}

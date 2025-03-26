@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Pdd Answers</string>
     <string name="error_unknown">Неизвестная ошибка</string>
+    <string name="search_hint">Введите текст вопроса</string>
+    <string name="close_hint">Очистить поле поиска</string>
 </resources>
