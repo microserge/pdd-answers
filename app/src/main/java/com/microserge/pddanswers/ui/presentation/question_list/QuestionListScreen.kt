@@ -57,7 +57,7 @@ fun QuestionListScreen(
 
     val searchResultListState = rememberLazyListState()
 
-    LaunchedEffect(state.searchResult) {
+    LaunchedEffect(state.searchQuery) {
         searchResultListState.animateScrollToItem(0)
     }
 
@@ -107,24 +107,24 @@ fun QuestionListScreen(
 
                     else -> {
 
-                            QuestionList(
-                                questions = state.searchResult,
-                                onQuestionClick = {
-                                    onAction(QuestionListAction.OnQuestionClick(it))
-                                },
-                                onLoadMore = {
-                                    onAction(QuestionListAction.LoadMore)
-                                },
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(vertical = 16.dp),
-                            )
-                            if (state.isLoading) {
-                                CircularProgressIndicator()
-                            }
+                        QuestionList(
+                            scrollState = searchResultListState,
+                            questions = state.searchResult,
+                            onQuestionClick = {
+                                onAction(QuestionListAction.OnQuestionClick(it))
+                            },
+                            onLoadMore = {
+                                onAction(QuestionListAction.LoadMore)
+                            },
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(vertical = 16.dp),
+                        )
+                        if (state.isLoading) {
+                            CircularProgressIndicator()
+                        }
                     }
                 }
-
             }
         }
     }
