@@ -1,6 +1,7 @@
 package com.microserge.pddanswers.ui.presentation.question_list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,15 +9,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.microserge.pddanswers.R
 import com.microserge.pddanswers.core.presentation.DarkBlue
+import com.microserge.pddanswers.ui.presentation.question_list.components.QuestionList
 import com.microserge.pddanswers.ui.presentation.question_list.components.QuestionSearchBar
 import org.koin.androidx.compose.koinViewModel
 
@@ -72,5 +80,41 @@ fun QuestionListScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
         )
+
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            if (state.isLoading) {
+                CircularProgressIndicator()
+            } else {
+                when {
+                    state.errorMessage != null -> {
+                        Text(
+                            text = state.errorMessage.asString(),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+
+                    state.searchResult.isEmpty() -> {
+                        Text(
+                            text = stringResource(R.string.empty),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+
+                    else -> {
+                        QuestionList(
+                            questions = state.searchResult,
+                            onQuestionClick = {
+                                onAction(QuestionListAction.OnQuestionClick(it))
+                            },
+                            modifier = Modifier.fillMaxSize().padding(vertical = 16.dp),
+                        )
+                    }
+                }
+            }
+        }
     }
 }

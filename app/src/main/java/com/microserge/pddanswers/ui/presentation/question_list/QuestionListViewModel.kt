@@ -62,21 +62,23 @@ class SearchViewModel(
             .distinctUntilChanged()
             .debounce(500L)
             .onEach { query ->
-                when {
-                    query.isBlank() -> {
-                        _state.update {
-                            it.copy(
-                                errorMessage = null,
-                                searchResult = cachedQuestions
-                            )
-                        }
-                    }
-
-                    query.length >= 2 -> {
-                        searchJob?.cancel()
-                        searchJob = searchQuestions(query)
-                    }
-                }
+                searchJob?.cancel()
+                searchJob = searchQuestions(query)
+//                when {
+//                    query.isBlank() -> {
+//                        _state.update {
+//                            it.copy(
+//                                errorMessage = null,
+//                                searchResult = cachedQuestions
+//                            )
+//                        }
+//                    }
+//
+//                    query.length >= 2 -> {
+//                        searchJob?.cancel()
+//                        searchJob = searchQuestions(query)
+//                    }
+//                }
             }
             .launchIn(viewModelScope)
     }
@@ -90,7 +92,11 @@ class SearchViewModel(
             .searchQuestions(query)
             .onSuccess { searchResult ->
                 _state.update {
-                    it.copy(isLoading = false, errorMessage = null, searchResult = searchResult)
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = null,
+                        searchResult = searchResult
+                    )
                 }
             }.onError { error ->
                 _state.update {

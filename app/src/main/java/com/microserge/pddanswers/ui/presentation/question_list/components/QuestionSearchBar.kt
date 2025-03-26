@@ -41,7 +41,9 @@ fun QuestionSearchBar(
         OutlinedTextField(
             colors = OutlinedTextFieldDefaults.colors(
                 cursorColor = DarkBlue,
-                focusedBorderColor = SandYellow
+                focusedBorderColor = SandYellow,
+                focusedTextColor = DarkBlue
+
             ),
             value = searchQuery,
             onValueChange = onSearchQueryChange,
@@ -55,7 +57,7 @@ fun QuestionSearchBar(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.66f)
+                    tint = DarkBlue.copy(alpha = 0.66f)
                 )
             },
             trailingIcon = {
@@ -70,7 +72,7 @@ fun QuestionSearchBar(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.close_hint),
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = DarkBlue.copy(alpha = 0.66f),
                         )
                     }
                 }

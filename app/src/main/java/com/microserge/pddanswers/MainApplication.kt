@@ -2,6 +2,7 @@ package com.microserge.pddanswers
 
 import android.app.Application
 import com.microserge.pddanswers.di.networkModule
+import com.microserge.pddanswers.di.platformModule
 import com.microserge.pddanswers.di.viewModelsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -15,7 +16,7 @@ class MainApplication : Application() {
 
             androidContext(this@MainApplication)
 
-            modules(viewModelsModule, networkModule)
+            modules(platformModule, viewModelsModule, networkModule)
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.microserge.pddanswers
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -81,6 +80,9 @@ import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneSca
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.microserge.pddanswers.ui.presentation.question_list.QuestionListScreenRoot
+import com.microserge.pddanswers.ui.presentation.question_list.SearchViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,33 +90,35 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PddAnswersTheme {
-                Scaffold(modifier = Modifier.fillMaxSize(), floatingActionButton = {
-                    FloatingActionButton(
-                        onClick = {
-                            Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
-                        },
-                    ) {
-                        Icon(Icons.Filled.Search, "Floating action button.")
-                    }
-                }) { innerPadding ->
-                    Column(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        var text by remember {
-                            mutableStateOf("")
-                        }
-                        Row {
-//                            SearchBarSample()
-                            SearchTextField(
-                                text,
-                                onSearchTriggered = { text = it },
-                                onSearchQueryChanged = { text = it })
-                        }
-                        ListDetailLayout()
+                val viewModel = koinViewModel<SearchViewModel>()
+                QuestionListScreenRoot(viewModel)
+//                Scaffold(modifier = Modifier.fillMaxSize(), floatingActionButton = {
+//                    FloatingActionButton(
+//                        onClick = {
+//                            Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
+//                        },
+//                    ) {
+//                        Icon(Icons.Filled.Search, "Floating action button.")
+//                    }
+//                }) { innerPadding ->
+//                    Column(
+//                        modifier = Modifier
+//                            .padding(innerPadding)
+//                            .fillMaxSize(),
+//                        verticalArrangement = Arrangement.Top,
+//                        horizontalAlignment = Alignment.CenterHorizontally
+//                    ) {
+//                        var text by remember {
+//                            mutableStateOf("")
+//                        }
+//                        Row {
+////                            SearchBarSample()
+//                            SearchTextField(
+//                                text,
+//                                onSearchTriggered = { text = it },
+//                                onSearchQueryChanged = { text = it })
+//                        }
+//                        ListDetailLayout()
 
 //                        LazyColumn(
 //                            contentPadding = PaddingValues(
@@ -136,10 +140,8 @@ class MainActivity : ComponentActivity() {
 //                                )
 //                            }
 //                        }
-                    }
-
-                }
             }
+
         }
     }
 }
@@ -250,23 +252,6 @@ private fun SearchTextField(
     )
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
-    }
-}
-
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PddAnswersTheme {
-        Greeting("Android")
     }
 }
 

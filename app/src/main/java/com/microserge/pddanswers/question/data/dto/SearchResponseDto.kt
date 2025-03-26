@@ -12,10 +12,10 @@ data class SearchResponseDto(
 
 @Serializable
 data class Links(
-    @SerialName("first") val first: String,
-    @SerialName("last") val last: String,
-    @SerialName("next") val next: String,
-    @SerialName("prev") val prev: String
+    @SerialName("first") val first: String?,
+    @SerialName("last") val last: String?,
+    @SerialName("next") val next: String?,
+    @SerialName("prev") val prev: String?
 )
 
 @Serializable
