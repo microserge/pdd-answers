@@ -20,11 +20,11 @@ data class Links(
 
 @Serializable
 data class Meta(
-    @SerialName("current_page") val currentPage: Int,
-    @SerialName("from") val from: Int,
-    @SerialName("last_page") val lastPage: Int,
-    @SerialName("path") val path: String,
-    @SerialName("per_page") val pageSize: Int,
-    @SerialName("to") val to: Int,
+    @SerialName("current_page") val currentPage: Int?,
+    @SerialName("from") val from: Int?,
+    @SerialName("last_page") val lastPage: Int?,
+    @SerialName("path") val path: String?,
+    @SerialName("per_page") val pageSize: Int?,
+    @SerialName("to") val to: Int?,
     @SerialName("total") val total: Int
 )

@@ -41,6 +41,7 @@ fun QuestionListScreenRoot(
             when (action) {
                 is QuestionListAction.OnQuestionClick -> Unit
                 is QuestionListAction.OnSearchQueryChange -> Unit
+                QuestionListAction.LoadMore -> Unit
             }
             viewModel.onAction(action)
         }
@@ -82,7 +83,7 @@ fun QuestionListScreen(
         )
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            if (state.isLoading) {
+            if (state.isLoading && state.searchResult.isEmpty()) {
                 CircularProgressIndicator()
             } else {
                 when {
@@ -105,15 +106,25 @@ fun QuestionListScreen(
                     }
 
                     else -> {
-                        QuestionList(
-                            questions = state.searchResult,
-                            onQuestionClick = {
-                                onAction(QuestionListAction.OnQuestionClick(it))
-                            },
-                            modifier = Modifier.fillMaxSize().padding(vertical = 16.dp),
-                        )
+
+                            QuestionList(
+                                questions = state.searchResult,
+                                onQuestionClick = {
+                                    onAction(QuestionListAction.OnQuestionClick(it))
+                                },
+                                onLoadMore = {
+                                    onAction(QuestionListAction.LoadMore)
+                                },
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(vertical = 16.dp),
+                            )
+                            if (state.isLoading) {
+                                CircularProgressIndicator()
+                            }
                     }
                 }
+
             }
         }
     }

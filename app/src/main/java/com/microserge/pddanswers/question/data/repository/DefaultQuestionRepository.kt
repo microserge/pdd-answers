@@ -11,12 +11,18 @@ import com.microserge.pddanswers.question.domain.QuestionRepository
 class DefaultQuestionRepository(
     private val remoteQuestionDataSource: RemoteQuestionDataSource
 ) : QuestionRepository {
-    override suspend fun searchQuestions(query: String): Result<List<Question>, DataError.Remote> {
-        return remoteQuestionDataSource.searchQuestions(query)
+    override suspend fun searchQuestions(query: String, page: Int): Result<Pair<List<Question>, Pair<Int, Int>>, DataError.Remote> {
+        return remoteQuestionDataSource.searchQuestions(query, page)
             .map { dto ->
-                dto.data.map {
-                    it.toQuestion()
-                }
+                Pair(
+                    dto.data.map {
+                        it.toQuestion()
+                    },
+                    Pair(
+                        dto.meta.currentPage!!,
+                        dto.meta.lastPage!!
+                    )
+                )
             }
     }
 }

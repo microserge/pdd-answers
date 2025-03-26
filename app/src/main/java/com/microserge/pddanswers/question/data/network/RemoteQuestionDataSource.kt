@@ -7,7 +7,7 @@ import com.microserge.pddanswers.question.data.dto.SearchResponseDto
 interface RemoteQuestionDataSource {
     suspend fun searchQuestions(
         query: String,
-        page: Int = 0
+        page: Int = 1
     ): Result<SearchResponseDto, DataError.Remote>
 }
 

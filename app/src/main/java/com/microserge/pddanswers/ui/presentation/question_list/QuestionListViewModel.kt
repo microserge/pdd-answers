@@ -49,8 +49,17 @@ class SearchViewModel(
 
             is QuestionListAction.OnSearchQueryChange -> {
                 _state.update {
-                    it.copy(searchQuery = action.query)
+                    it.copy(searchQuery = action.query, currentPage = 1)
                 }
+            }
+
+            QuestionListAction.LoadMore -> {
+                if (state.value.totalPages != state.value.currentPage)
+                    _state.update {
+                        it.copy(
+                            currentPage = it.currentPage + 1
+                        )
+                    }
             }
         }
     }
@@ -58,44 +67,31 @@ class SearchViewModel(
     @OptIn(FlowPreview::class)
     private fun observeSearchQuery() {
         state
-            .map { it.searchQuery }
+            .map { Pair(it.searchQuery, it.currentPage) }
             .distinctUntilChanged()
             .debounce(500L)
             .onEach { query ->
                 searchJob?.cancel()
-                searchJob = searchQuestions(query)
-//                when {
-//                    query.isBlank() -> {
-//                        _state.update {
-//                            it.copy(
-//                                errorMessage = null,
-//                                searchResult = cachedQuestions
-//                            )
-//                        }
-//                    }
-//
-//                    query.length >= 2 -> {
-//                        searchJob?.cancel()
-//                        searchJob = searchQuestions(query)
-//                    }
-//                }
+                searchJob = searchQuestions(query.first, query.second)
             }
             .launchIn(viewModelScope)
     }
 
-    private fun searchQuestions(query: String) = viewModelScope.launch {
+    private fun searchQuestions(query: String, page: Int = 1) = viewModelScope.launch {
         _state.update {
             it.copy(isLoading = true)
         }
 
         questionRepository
-            .searchQuestions(query)
+            .searchQuestions(query, page)
             .onSuccess { searchResult ->
                 _state.update {
                     it.copy(
                         isLoading = false,
                         errorMessage = null,
-                        searchResult = searchResult
+                        searchResult = if (page == 1) searchResult.first else it.searchResult + searchResult.first,
+                        currentPage = searchResult.second.first,
+                        totalPages = searchResult.second.second
                     )
                 }
             }.onError { error ->

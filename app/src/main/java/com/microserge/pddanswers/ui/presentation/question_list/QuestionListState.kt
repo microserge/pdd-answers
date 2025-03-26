@@ -7,5 +7,7 @@ data class QuestionListState(
     val searchQuery: String = "",
     val searchResult: List<Question> = emptyList(),
     val isLoading: Boolean = true,
-    val errorMessage: UiText? = null
+    val errorMessage: UiText? = null,
+    val totalPages: Int = 0,
+    val currentPage: Int = 1
 )

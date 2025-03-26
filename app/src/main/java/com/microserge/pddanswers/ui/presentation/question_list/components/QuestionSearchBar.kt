@@ -3,26 +3,29 @@ package com.microserge.pddanswers.ui.presentation.question_list.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import com.microserge.pddanswers.R
 import com.microserge.pddanswers.core.presentation.DarkBlue
-import com.microserge.pddanswers.core.presentation.SandYellow
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.minimumInteractiveComponentSize
 import com.microserge.pddanswers.core.presentation.DesertWhite
+import com.microserge.pddanswers.core.presentation.SandYellow
 
 @Composable
 fun QuestionSearchBar(
@@ -53,6 +56,16 @@ fun QuestionSearchBar(
                     text = stringResource(R.string.search_hint)
                 )
             },
+            singleLine = true,
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    onImeSearch()
+                }
+            ),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Search
+            ),
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
