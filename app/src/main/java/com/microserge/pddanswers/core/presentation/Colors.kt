@@ -4,5 +4,5 @@ import androidx.compose.ui.graphics.Color
 
 val DarkBlue = Color(0xFF5d6692)
 val DesertWhite = Color(0xFFF4F5FB)
+val DesertWhite1 = Color(0xFFEBEBF3)
 val SandYellow = Color(0xFFF4F5FB)
-val LightBlue = Color(0xFFF4F5FB)

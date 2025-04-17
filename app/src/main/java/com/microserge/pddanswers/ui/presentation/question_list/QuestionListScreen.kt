@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.microserge.pddanswers.R
-import com.microserge.pddanswers.core.presentation.DarkBlue
+import com.microserge.pddanswers.core.presentation.DesertWhite
 import com.microserge.pddanswers.ui.presentation.question_list.components.QuestionList
 import com.microserge.pddanswers.ui.presentation.question_list.components.QuestionSearchBar
 import org.koin.androidx.compose.koinViewModel
@@ -64,7 +64,7 @@ fun QuestionListScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBlue)
+            .background(DesertWhite)
             .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

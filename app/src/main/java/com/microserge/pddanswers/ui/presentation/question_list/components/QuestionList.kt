@@ -28,7 +28,7 @@ fun QuestionList(
                 question = question,
                 modifier = Modifier
                     .widthIn(max = 700.dp)
-                    .padding(16.dp),
+                    .padding(horizontal = 12.dp, vertical = 4.dp),
                 onClick = { onQuestionClick(question) },
             )
         },
