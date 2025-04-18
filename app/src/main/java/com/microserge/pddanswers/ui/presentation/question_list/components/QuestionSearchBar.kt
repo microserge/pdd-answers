@@ -19,83 +19,87 @@ import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.microserge.pddanswers.R
+import com.microserge.pddanswers.core.presentation.Background
 import com.microserge.pddanswers.core.presentation.DarkBlue
 import com.microserge.pddanswers.core.presentation.SandYellow
+import com.microserge.pddanswers.core.presentation.SearchBackground
+import com.microserge.pddanswers.core.presentation.Text
 
 @Composable
 fun QuestionSearchBar(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onImeSearch: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     CompositionLocalProvider(
-        LocalTextSelectionColors provides TextSelectionColors(
-            handleColor = SandYellow,
-            backgroundColor = SandYellow
-        )
+        LocalTextSelectionColors provides
+            TextSelectionColors(
+                handleColor = SandYellow,
+                backgroundColor = SearchBackground,
+            ),
     ) {
         OutlinedTextField(
-            colors = OutlinedTextFieldDefaults.colors(
-                cursorColor = DarkBlue,
-                focusedBorderColor = SandYellow,
-                focusedTextColor = DarkBlue
-
-            ),
+            colors =
+                OutlinedTextFieldDefaults.colors(
+                    cursorColor = DarkBlue,
+                    focusedBorderColor = Background,
+                    focusedTextColor = Text,
+                ),
             value = searchQuery,
             onValueChange = onSearchQueryChange,
             shape = RoundedCornerShape(10),
             placeholder = {
                 Text(
-                    text = stringResource(R.string.search_hint)
+                    text = stringResource(R.string.search_hint),
                 )
             },
             singleLine = true,
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    onImeSearch()
-                }
-            ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Search
-            ),
+            keyboardActions =
+                KeyboardActions(
+                    onSearch = {
+                        onImeSearch()
+                    },
+                ),
+            keyboardOptions =
+                KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Search,
+                ),
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = null,
-                    tint = DarkBlue.copy(alpha = 0.66f)
+                    tint = Text.copy(alpha = 0.66f),
                 )
             },
             trailingIcon = {
                 AnimatedVisibility(
-                    visible = searchQuery.isNotBlank()
+                    visible = searchQuery.isNotBlank(),
                 ) {
                     IconButton(
                         onClick = {
                             onSearchQueryChange("")
-                        }
+                        },
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.close_hint),
-                            tint = DarkBlue.copy(alpha = 0.66f),
+                            tint = Text.copy(alpha = 0.66f),
                         )
                     }
                 }
             },
-            modifier = modifier
-                .background(
-                    shape = RoundedCornerShape(10),
-                    color = Color.LightGray
-                )
-                .minimumInteractiveComponentSize()
+            modifier =
+                modifier
+                    .background(
+                        shape = RoundedCornerShape(10),
+                        color = SearchBackground,
+                    ).minimumInteractiveComponentSize(),
         )
     }
 }

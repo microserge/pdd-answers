@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,16 +24,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.microserge.pddanswers.R
-import com.microserge.pddanswers.core.presentation.DesertWhite
+import com.microserge.pddanswers.core.presentation.Background
 import com.microserge.pddanswers.ui.presentation.question_list.components.QuestionList
 import com.microserge.pddanswers.ui.presentation.question_list.components.QuestionSearchBar
 import org.koin.androidx.compose.koinViewModel
 
-
 @Composable
-fun QuestionListScreenRoot(
-    viewModel: SearchViewModel = koinViewModel()
-) {
+fun QuestionListScreenRoot(viewModel: SearchViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     QuestionListScreen(
@@ -44,14 +42,14 @@ fun QuestionListScreenRoot(
                 QuestionListAction.LoadMore -> Unit
             }
             viewModel.onAction(action)
-        }
+        },
     )
 }
 
 @Composable
 fun QuestionListScreen(
     state: QuestionListState,
-    onAction: (QuestionListAction) -> Unit
+    onAction: (QuestionListAction) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -62,11 +60,12 @@ fun QuestionListScreen(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(DesertWhite)
-            .statusBarsPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Background)
+                .statusBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         QuestionSearchBar(
             searchQuery = state.searchQuery,
@@ -76,10 +75,16 @@ fun QuestionListScreen(
             onImeSearch = {
                 keyboardController?.hide()
             },
-            modifier = Modifier
-                .widthIn(max = 400.dp)
-                .fillMaxWidth()
-                .padding(16.dp)
+            modifier =
+                Modifier
+                    .widthIn(max = 400.dp)
+                    .fillMaxWidth()
+                    .padding(16.dp),
+        )
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = com.microserge.pddanswers.core.presentation.CardBorder,
         )
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -92,7 +97,7 @@ fun QuestionListScreen(
                             text = state.errorMessage.asString(),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.headlineSmall,
-                            color = MaterialTheme.colorScheme.error
+                            color = com.microserge.pddanswers.core.presentation.Text,
                         )
                     }
 
@@ -101,12 +106,11 @@ fun QuestionListScreen(
                             text = stringResource(R.string.empty),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.headlineSmall,
-                            color = MaterialTheme.colorScheme.error
+                            color = com.microserge.pddanswers.core.presentation.Text,
                         )
                     }
 
                     else -> {
-
                         QuestionList(
                             scrollState = searchResultListState,
                             questions = state.searchResult,
@@ -116,9 +120,10 @@ fun QuestionListScreen(
                             onLoadMore = {
                                 onAction(QuestionListAction.LoadMore)
                             },
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(vertical = 16.dp),
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(vertical = 16.dp),
                         )
                         if (state.isLoading) {
                             CircularProgressIndicator()

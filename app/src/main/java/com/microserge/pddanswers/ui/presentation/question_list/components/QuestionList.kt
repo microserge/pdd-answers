@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.microserge.pddanswers.question.domain.Question
 import com.microserge.pddanswers.core.presentation.components.EndlessLazyColumn
+import com.microserge.pddanswers.question.domain.Question
 
 @Composable
 fun QuestionList(
@@ -16,7 +16,7 @@ fun QuestionList(
     onQuestionClick: (Question) -> Unit,
     onLoadMore: () -> Unit,
     modifier: Modifier = Modifier,
-    scrollState: LazyListState = rememberLazyListState()
+    scrollState: LazyListState = rememberLazyListState(),
 ) {
     EndlessLazyColumn(
         modifier = modifier,
@@ -26,12 +26,13 @@ fun QuestionList(
         itemContent = { question: Question ->
             QuestionListItem(
                 question = question,
-                modifier = Modifier
-                    .widthIn(max = 700.dp)
-                    .padding(horizontal = 12.dp, vertical = 4.dp),
+                modifier =
+                    Modifier
+                        .widthIn(max = 700.dp)
+                        .padding(horizontal = 12.dp, vertical = 4.dp),
                 onClick = { onQuestionClick(question) },
             )
         },
-        loadMore = onLoadMore
+        loadMore = onLoadMore,
     )
 }
